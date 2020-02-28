@@ -32,6 +32,7 @@ sqldf("select sum(Sales) from Fruits")
 sqldf("select sum(Sales) from Fruits group by Fruit")
 sqldf("select sum(Sales) from Fruits group by Year " )
 
+Fruits %>% group_by(Year) %>% summarise(sum_sales = sum(Sales))
 
 library(dplyr)
 iris %>% head
@@ -83,8 +84,9 @@ diamonds %>%
          height = z)
 
 
+diamonds
 
-?regex
+
 
 data = c("apple", "banana", "banano")
 grep("banana", data)
@@ -93,3 +95,74 @@ grepl("banana", data)
 
 
 
+
+mpg %>% filter(manufacturer == "toyota") %>% select(hwy) %>% summarise(mean = mean(hwy))
+mpg %>% filter(manufacturer == "audi") %>% select(hwy) %>% summarise(mean = mean(hwy))
+
+
+df = read.csv("http://goo.gl/HKnl74")
+df
+
+m1 = lm(df$overall ~ df$rides)
+plot(df$overall ~ df$rides , xlabe = "Statisfaction with RIdes", ylab = "Overall Satisfaction") 
+abline(m1, col = 'blue')
+
+summary(m1)
+
+m2 = lm(df$overall ~ df$rides + df$games + df$clean)
+summary(m2)
+
+
+m3 = lm(df$overall ~ df$rides + df$games + df$clean + df$weekend)
+summary(m3)
+
+
+
+
+corona = read.csv("C:/Users/onycom/Downloads/경기도코로나19신천지방역현황.csv")
+corona
+
+
+corona %>% colnames
+corona %>% select(데이터기준일시)
+corona 
+unique(corona$시군명)
+
+
+str(corona)
+unique(corona$시설구분명)
+summary(corona)
+unique(corona$방역여부) 
+class(corona$방역여부)
+dim(corona)
+
+
+corona
+gsub("", NA, corona$방역주기)
+ifelse(corona$방역주기 == "", NA, corona$방역주기)
+corona
+
+
+corona %>% head
+corona$시군명
+library(leaflet)
+
+table(is.na(corona$위도 | corona$경도))
+## na인 위 경도 값은 제거
+
+is.na(corona$위도) %>% table
+corona %>% filter(is.na(위도) != TRUE & is.na(경도) != TRUE)
+
+corona = corona %>% select(위도,경도)
+
+install.packages("leaflet.extras")
+library(leaflet.extras)
+
+install.packages("ggmap")
+library(ggmap)
+
+
+leaflet(corona) %>%
+  setView(lng = 경도, lat = 위도, zoom = 3) %>%
+  addTiles() %>%
+  addCircles(lng = ~lon, lat = ~lat)
